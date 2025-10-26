@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, Phone } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Link, useLocation } from "react-router-dom";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,20 +17,16 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    element?.scrollIntoView({ behavior: "smooth" });
-    setIsOpen(false);
-  };
-
   const navItems = [
-    { label: "Home", id: "home" },
-    { label: "About", id: "about" },
-    { label: "Services", id: "services" },
-    { label: "Gallery", id: "gallery" },
-    { label: "Pricing", id: "pricing" },
-    { label: "Contact", id: "contact" },
+    { label: "Home", path: "/" },
+    { label: "About", path: "/about" },
+    { label: "Services", path: "/services" },
+    { label: "Gallery", path: "/gallery" },
+    { label: "Pricing", path: "/pricing" },
+    { label: "Contact", path: "/contact" },
   ];
+
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <header
@@ -40,23 +38,27 @@ const Header = () => {
     >
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
-        <button
-          onClick={() => scrollToSection("home")}
+        <Link
+          to="/"
           className="text-2xl font-bold font-playfair text-gold hover:text-gold/80 transition-smooth"
         >
           Dermo Spa Meknes
-        </button>
+        </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center space-x-8">
           {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => scrollToSection(item.id)}
-              className="text-foreground hover:text-gold transition-smooth font-medium"
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`transition-smooth font-medium ${
+                isActive(item.path)
+                  ? "text-gold"
+                  : "text-foreground hover:text-gold"
+              }`}
             >
               {item.label}
-            </button>
+            </Link>
           ))}
         </nav>
 
@@ -69,12 +71,11 @@ const Header = () => {
             <Phone size={18} className="mr-2" />
             <span className="font-medium">+212 5XX-XXXXXX</span>
           </a>
-          <Button
-            className="bg-gold hover:bg-gold/90 text-background font-semibold shadow-glow"
-            onClick={() => scrollToSection("contact")}
-          >
-            Book Now
-          </Button>
+          <Link to="/contact">
+            <Button className="bg-gold hover:bg-gold/90 text-background font-semibold shadow-glow">
+              Book Now
+            </Button>
+          </Link>
         </div>
 
         {/* Mobile Menu */}
@@ -90,13 +91,18 @@ const Header = () => {
                 Menu
               </h2>
               {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className="text-left text-lg text-foreground hover:text-gold transition-smooth font-medium"
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => setIsOpen(false)}
+                  className={`text-left text-lg transition-smooth font-medium ${
+                    isActive(item.path)
+                      ? "text-gold"
+                      : "text-foreground hover:text-gold"
+                  }`}
                 >
                   {item.label}
-                </button>
+                </Link>
               ))}
               <div className="pt-6 border-t border-border space-y-4">
                 <a
@@ -106,12 +112,11 @@ const Header = () => {
                   <Phone size={18} className="mr-2" />
                   <span>+212 5XX-XXXXXX</span>
                 </a>
-                <Button
-                  className="w-full bg-gold hover:bg-gold/90 text-background font-semibold shadow-glow"
-                  onClick={() => scrollToSection("contact")}
-                >
-                  Book Now
-                </Button>
+                <Link to="/contact" onClick={() => setIsOpen(false)}>
+                  <Button className="w-full bg-gold hover:bg-gold/90 text-background font-semibold shadow-glow">
+                    Book Now
+                  </Button>
+                </Link>
               </div>
             </div>
           </SheetContent>

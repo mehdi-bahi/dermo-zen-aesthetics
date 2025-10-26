@@ -1,5 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { Check } from "lucide-react";
 
 const packages = [
@@ -50,10 +51,6 @@ const packages = [
 ];
 
 const Pricing = () => {
-  const scrollToBooking = () => {
-    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
     <section className="py-20 px-4 relative bg-card/30">
       <div className="max-w-7xl mx-auto">
@@ -99,16 +96,17 @@ const Pricing = () => {
                     </li>
                   ))}
                 </ul>
-                <Button
-                  className={`w-full py-6 text-lg font-semibold transition-smooth ${
-                    pkg.popular
-                      ? 'bg-gold hover:bg-gold/90 text-background shadow-glow'
-                      : 'bg-secondary hover:bg-secondary/90 text-background'
-                  }`}
-                  onClick={scrollToBooking}
-                >
-                  Book This Package
-                </Button>
+                <Link to="/contact">
+                  <Button
+                    className={`w-full py-6 text-lg font-semibold transition-smooth ${
+                      pkg.popular
+                        ? 'bg-gold hover:bg-gold/90 text-background shadow-glow'
+                        : 'bg-secondary hover:bg-secondary/90 text-background'
+                    }`}
+                  >
+                    Book This Package
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           ))}

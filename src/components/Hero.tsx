@@ -1,11 +1,9 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-spa.jpg";
 import { Sparkles, Flame, Droplets } from "lucide-react";
 
 const Hero = () => {
-  const scrollToBooking = () => {
-    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-  };
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
@@ -48,21 +46,23 @@ const Hero = () => {
           Experience the perfect blend of traditional Moroccan spa rituals and modern skincare treatments in the heart of Meknes
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fadeIn" style={{ animationDelay: '0.6s' }}>
-          <Button 
-            size="lg" 
-            className="bg-gold hover:bg-gold/90 text-background font-semibold text-lg px-8 py-6 shadow-glow transition-smooth hover:scale-105"
-            onClick={scrollToBooking}
-          >
-            Book Your Experience
-          </Button>
-          <Button 
-            size="lg" 
-            variant="outline" 
-            className="border-2 border-gold text-gold hover:bg-gold/10 font-semibold text-lg px-8 py-6 transition-smooth hover:scale-105"
-            onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
-          >
-            Discover Our Services
-          </Button>
+          <Link to="/contact">
+            <Button 
+              size="lg" 
+              className="bg-gold hover:bg-gold/90 text-background font-semibold text-lg px-8 py-6 shadow-glow transition-smooth hover:scale-105"
+            >
+              Book Your Experience
+            </Button>
+          </Link>
+          <Link to="/services">
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="border-2 border-gold text-gold hover:bg-gold/10 font-semibold text-lg px-8 py-6 transition-smooth hover:scale-105"
+            >
+              Discover Our Services
+            </Button>
+          </Link>
         </div>
       </div>
 
