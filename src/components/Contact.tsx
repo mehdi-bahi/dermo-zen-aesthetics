@@ -2,13 +2,69 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { toast } from "sonner";
+import { useState } from "react";
+import { z } from "zod";
+
+const bookingSchema = z.object({
+  name: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
+  email: z.string().trim().email("Invalid email address").max(255),
+  phone: z.string().trim().min(10, "Phone number must be at least 10 digits").max(20),
+  date: z.string().min(1, "Please select a date"),
+  service: z.string().min(1, "Please select a service"),
+  message: z.string().trim().max(1000).optional(),
+});
 
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    date: "",
+    service: "",
+    message: "",
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Thank you! We'll contact you shortly to confirm your booking.");
+    
+    try {
+      bookingSchema.parse(formData);
+      setErrors({});
+      
+      // Encode data for WhatsApp
+      const message = `New Spa Booking Request:\n\nName: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nPreferred Date: ${formData.date}\nService: ${formData.service}\nMessage: ${formData.message || 'N/A'}`;
+      const encodedMessage = encodeURIComponent(message);
+      
+      toast.success("Thank you! We'll contact you shortly to confirm your booking.");
+      
+      // Optional: Open WhatsApp (uncomment and add real number when ready)
+      // window.open(`https://wa.me/2125XXXXXXXX?text=${encodedMessage}`, '_blank');
+      
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        date: "",
+        service: "",
+        message: "",
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const newErrors: Record<string, string> = {};
+        error.errors.forEach((err) => {
+          if (err.path[0]) {
+            newErrors[err.path[0].toString()] = err.message;
+          }
+        });
+        setErrors(newErrors);
+        toast.error("Please check your form for errors");
+      }
+    }
   };
 
   return (
@@ -31,38 +87,67 @@ const Contact = () => {
               <div>
                 <Input
                   placeholder="Your Name"
-                  required
-                  className="bg-card border-border h-12 text-lg"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className={`bg-card border-border h-12 text-lg ${errors.name ? 'border-destructive' : ''}`}
                 />
+                {errors.name && <p className="text-destructive text-sm mt-1">{errors.name}</p>}
               </div>
               <div>
                 <Input
                   type="email"
                   placeholder="Email Address"
-                  required
-                  className="bg-card border-border h-12 text-lg"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className={`bg-card border-border h-12 text-lg ${errors.email ? 'border-destructive' : ''}`}
                 />
+                {errors.email && <p className="text-destructive text-sm mt-1">{errors.email}</p>}
               </div>
               <div>
                 <Input
                   type="tel"
-                  placeholder="Phone Number"
-                  required
-                  className="bg-card border-border h-12 text-lg"
+                  placeholder="Phone Number (e.g., +212 6XX-XXXXXX)"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  className={`bg-card border-border h-12 text-lg ${errors.phone ? 'border-destructive' : ''}`}
                 />
+                {errors.phone && <p className="text-destructive text-sm mt-1">{errors.phone}</p>}
               </div>
               <div>
                 <Input
                   type="date"
-                  placeholder="Preferred Date"
-                  required
-                  className="bg-card border-border h-12 text-lg"
+                  value={formData.date}
+                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                  min={new Date().toISOString().split('T')[0]}
+                  className={`bg-card border-border h-12 text-lg ${errors.date ? 'border-destructive' : ''}`}
                 />
+                {errors.date && <p className="text-destructive text-sm mt-1">{errors.date}</p>}
+              </div>
+              <div>
+                <Select
+                  value={formData.service}
+                  onValueChange={(value) => setFormData({ ...formData, service: value })}
+                >
+                  <SelectTrigger className={`bg-card border-border h-12 text-lg ${errors.service ? 'border-destructive' : ''}`}>
+                    <SelectValue placeholder="Select a service package" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-card border-border">
+                    <SelectItem value="relaxation">Relaxation Ritual (450 DH)</SelectItem>
+                    <SelectItem value="royal">Royal Hammam (750 DH)</SelectItem>
+                    <SelectItem value="ultimate">Ultimate Luxury (1200 DH)</SelectItem>
+                    <SelectItem value="massage">Signature Massage</SelectItem>
+                    <SelectItem value="facial">Facial Treatment</SelectItem>
+                    <SelectItem value="custom">Custom Package</SelectItem>
+                  </SelectContent>
+                </Select>
+                {errors.service && <p className="text-destructive text-sm mt-1">{errors.service}</p>}
               </div>
               <div>
                 <Textarea
-                  placeholder="Tell us about your preferences or any special requests..."
+                  placeholder="Tell us about your preferences or any special requests... (optional)"
                   rows={5}
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   className="bg-card border-border text-lg resize-none"
                 />
               </div>
