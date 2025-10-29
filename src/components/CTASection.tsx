@@ -27,21 +27,21 @@ const CTASection = () => {
             Experience the perfect harmony of traditional Moroccan spa rituals and modern wellness treatments. Book your appointment and discover true relaxation.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
-            <Link to="/contact" className="w-full sm:w-auto">
+          <div className="flex flex-wrap gap-6 justify-center items-center mb-12">
+            <Link to="/contact">
               <Button 
                 size="lg" 
-                className="w-full sm:w-auto bg-gold hover:bg-gold/90 text-background font-semibold text-lg px-10 py-7 shadow-glow transition-smooth hover:scale-105"
+                className="bg-gold hover:bg-gold/90 text-background font-semibold text-lg px-10 py-7 shadow-glow transition-smooth hover:scale-105"
               >
                 <Calendar className="mr-2" size={24} />
                 Book Your Experience
               </Button>
             </Link>
-            <Link to="/pricing" className="w-full sm:w-auto">
+            <Link to="/pricing">
               <Button 
                 size="lg" 
                 variant="outline"
-                className="w-full sm:w-auto border-2 border-gold text-gold hover:bg-gold/10 font-semibold text-lg px-10 py-7 transition-smooth hover:scale-105"
+                className="border-2 border-gold text-gold hover:bg-gold/10 font-semibold text-lg px-10 py-7 transition-smooth hover:scale-105 bg-transparent"
               >
                 <Gift className="mr-2" size={24} />
                 View Gift Packages

@@ -45,7 +45,7 @@ const Hero = () => {
         <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto animate-fadeIn" style={{ animationDelay: '0.4s' }}>
           Experience the perfect blend of traditional Moroccan spa rituals and modern skincare treatments in the heart of Meknes
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fadeIn" style={{ animationDelay: '0.6s' }}>
+        <div className="flex flex-wrap gap-4 justify-center animate-fadeIn" style={{ animationDelay: '0.6s' }}>
           <Link to="/contact">
             <Button 
               size="lg" 
@@ -58,7 +58,7 @@ const Hero = () => {
             <Button 
               size="lg" 
               variant="outline" 
-              className="border-2 border-gold text-gold hover:bg-gold/10 font-semibold text-lg px-8 py-6 transition-smooth hover:scale-105"
+              className="border-2 border-gold text-gold hover:bg-gold/10 font-semibold text-lg px-8 py-6 transition-smooth hover:scale-105 bg-transparent"
             >
               Discover Our Services
             </Button>

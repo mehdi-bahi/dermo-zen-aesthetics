@@ -1,5 +1,7 @@
 import Header from "@/components/Header";
 import Welcome from "@/components/Welcome";
+import AboutStory from "@/components/AboutStory";
+import Testimonials from "@/components/Testimonials";
 import Footer from "@/components/Footer";
 
 const About = () => {
@@ -8,6 +10,8 @@ const About = () => {
       <Header />
       <div className="pt-20">
         <Welcome />
+        <AboutStory />
+        <Testimonials />
       </div>
       <Footer />
     </div>
