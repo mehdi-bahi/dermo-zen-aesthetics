@@ -42,7 +42,7 @@ const Header = () => {
           to="/"
           className="text-2xl font-bold font-playfair text-gold hover:text-gold/80 transition-smooth"
         >
-          Dermo Spa Meknes
+          Miel Spa Meknes
         </Link>
 
         {/* Desktop Navigation */}
